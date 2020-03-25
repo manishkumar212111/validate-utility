@@ -10,6 +10,7 @@ Run : `npm i validate-utility`
 
 | Function name | Description                    |
 | ------------- | ------------------------------ |
+| `validate(e.target , id , callBack)`      | `This method is used with input attribute as used in sample code`       |
 | `url(value)`      | `Validate URL.`       |
 | `email(value)`      | `Validate email.`       |
 | `alnum(value)`      | `Validate string with alpha and numeric only.`       |
@@ -50,12 +51,20 @@ Note : It return true if validation is successfull
 
 ## Sample Code
 
-```<input type="text"   
+```\
+    function cb (error , id , selector) {
+       console.log(error);
+       it prints {
+              status: true,
+              message: ""}
+       }
+    <input type="text"   
        data-vu-err-msg="this is error message"
-       data-vu-type="number"
-       onKeyUp={(e) => validateUtility.validate(e.target , "tets" , (res) => { console.log(res) }) } 
+       onKeyUp={(e) => validateUtility.validate(e.target , "tets" , cb }) } 
        onKeyPress={(e) => validateUtility.stopDefault(e)}
-       data-vu-type="required,minLength,alpha"
+       data-vu-type="required,minLength,alpha" // type of validation required (any methid name can be used here like mobile,url,email etc
        data-vu-min-length="6"
+       data-vu-err-msg="This is error message"
        //data-vu-min-value="8"
-    /> ```
+    /> 
+```
