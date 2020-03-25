@@ -11,12 +11,20 @@
       "url": "https://github.com/manishkumar212111/validate-utility"
     },
     "keywords": [
-        "random",
-        "variable",
-        "generetor",
-        "password",
-        "string"
+        "validate",
+        "regex",
+        "form-validate",
+        "input-validate",
+        "validation",
+        "email-validation",
+        "pancard",
+        "ip validation",
+        "Driving License validation",
+        "passport validation",
+        "url validation",
+        "validateutility",
+        "react-validate"
     ],
-    "version": "1.1.7"
+    "version": "0.0.2"
   }
   

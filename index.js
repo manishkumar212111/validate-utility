@@ -1,3 +1,4 @@
+'use strict'
 
 const regexps = {
 	url: /^(?:(?:(?:https?|ftp):)?\/\/)(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})).?)(?::\d{2,5})?(?:[/?#]\S*)?$/i,
@@ -12,9 +13,9 @@ const regexps = {
     pancard: /^[a-zA-Z]{5}\d{4}[a-zA-Z]{1}$/,
     DateBelow2000: /^(195[2-9]|19[6-9][0-9])\-(0[1-9]|1[0-2])\-(0[1-9]|[12][0-9]|3[01])$/,
     DateBelow2000R : /^(0[1-9]|[12][0-9]|3[01])\-(0[1-9]|1[0-2])\-(195[2-9]|19[6-9][0-9])$/,
-    fullnamewithspace:/^[a-zA-z]+\s[a-zA-z]+/,
+    fullnamewithspace:/^([a-zA-z]+\s[a-zA-z])$/,
     voterID:/^([a-zA-Z]){3}([0-9]){7}?$/,
-    dl: /^(?[A-Z]{2})(?\d{2})(?\d{4})(?\d{7})$/,
+    dl: /^([A-Z]){2}(\d{2})(\d{4})(\d{7})$/,
     passport:/^[A-Z][0-9]{8}$/,
     timeString: /^(2[0-3]|[01]?[0-9]):([0-5]?[0-9]):([0-5]?[0-9])$/,
 	dateString: /^(1[0-2]|0?[1-9])\/(3[01]|[12][0-9]|0?[1-9])\/(?:[0-9]{2})?[0-9]{2}$/,
@@ -29,7 +30,7 @@ const regexps = {
 	//ONLY IP V4
 	ip: /^(?:(?:\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])\.){3}(?:\d|[1-9]\d|1\d{2}|2[0-4]\d|25[0-5])$/,
     vehiclenumber: /^[A-Za-z]{2}[0-9]{2}[A-Za-z]{0,2}[0-9]{4}$/,
-    pan: /[A-Za-z]{5}\d{4}[A-Za-z]{1}/
+    pan: /[A-Za-z]{5}\d{4}[A-Za-z]{1}$/
 };
 
 const defaults = {
@@ -84,11 +85,15 @@ let validateUtility = {
     },
     
     stopDefault(event) {
+        if(regex){
+            validateUtility[regexType]()
+        }
         var validationType = event.target.getAttribute("data-vu-type");
         if (validationType == null || typeof validationType == 'undefined') return;
         var type = validationType.split(',');
         if (type.length == 0) return;
         var key = String.fromCharCode(event.which);
+        
         if (type.indexOf('alpha') > -1) {
             if (!regexps['alpha'].test(key))
                 event.preventDefault();
@@ -102,7 +107,7 @@ let validateUtility = {
         } else if (type.indexOf('alnumwithspace') > -1) {
             if (!regexps['alnumwithspace'].test(key))
                 event.preventDefault();
-        }
+        } 
     }, 
 
     dynamicRegx() {
@@ -136,8 +141,8 @@ let validateUtility = {
         return  v >= value;
     },
 
-    equalTo(el) {        
-        return el.getAttribute('data-vu-equalTo') === el.value;
+    equalTo(el , el1) {        
+        return el === el1;
     },
 
     maxLength(v, length) {
@@ -146,9 +151,7 @@ let validateUtility = {
     },    
     isChecked(el) {
         //console.log("in checked")
-        window.temp = el;
-        //console.log(el , el.checked  );
-        return (el[0].checked ? true : false);
+        return (el.checked ? true : false);
     },
 }
 validateUtility = validateUtility.dynamicRegx();
